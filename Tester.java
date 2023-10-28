@@ -5,6 +5,6 @@ public class Tester {
         BellmanFord.main(arr);
         OptimalBST.main(arr);
         Prefix.main(arr);
-        Prim.main(arr);
+        //Prim.main(arr);
     }
 }
