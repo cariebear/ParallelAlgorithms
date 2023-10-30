@@ -3,7 +3,7 @@ public class Tester {
     {
         int arr[] = {1,2};
         BellmanFord.main(arr);
-        OptimalBST.main(arr);
+        //OptimalBST.main(arr);
         Prefix.main(arr);
         //Prim.main(arr);
     }
