@@ -73,10 +73,10 @@ public class OptimalBST {
         }
     }
 
-    public static void main(String[] args) {
-        int keys[] = {10, 20, 30, 40};
-        int freq[] = {4, 2, 6, 3};
-        int n = keys.length;
+    public static void main(int[] args) {
+        int keys[] = {10};
+        int freq[] = args; //{25,20,5,20,30};
+        int n = freq.length;
 
         ForkJoinPool pool = new ForkJoinPool();
         int result = pool.invoke(new OptimalSearchTreeTask(freq, 0, n - 1));

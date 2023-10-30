@@ -2,17 +2,18 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class Prim {
-    public static void main(String[] args) {
-        int[][] graph = {
-                {0, 3, 0, 0, 4},
-                {3, 0, 5, 9, 0},
-                {0, 5, 0, 2, 6},
-                {0, 9, 2, 0, 7},
-                {4, 0, 6, 7, 0}
-        };
+    public static void main(int[][] args) {
+        int[][] graph = args;
+
+//        {
+//                {0, 3, 0, 0, 4},
+//                {3, 0, 5, 9, 0},
+//                {0, 5, 0, 2, 6},
+//                {0, 9, 2, 0, 7},
+//                {4, 0, 6, 7, 0}
+//        };
 
         int numVertices = graph.length;
-
         int[] d = new int[numVertices];
         int[] G = new int[numVertices];
         boolean[] fixed = new boolean[numVertices];
@@ -22,14 +23,16 @@ public class Prim {
         Set<Edge> MWE = new HashSet<>();
         BinaryHeap heap = new BinaryHeap();
 
+        //initializing arrays
         for (int i = 0; i < numVertices; i++) {
             d[i] = Integer.MAX_VALUE;
             G[i] = -1;
             fixed[i] = false;
         }
-
+        //going line by line from the parallel-prim algo from the book
         d[0] = 0;
         heap.insert(new Node(0, d[0]));
+
 
         while (!heap.isEmpty()) {
             Node node = heap.removeMin();
@@ -67,6 +70,7 @@ public class Prim {
 
         if (T.size() == numVertices - 1) {
             System.out.println("Minimum Spanning Tree Edges: " + T);
+            System.out.println();
         } else {
             System.out.println("No spanning tree exists.");
         }
@@ -112,6 +116,11 @@ class Edge {
     public String toString() {
         return "(" + from + ", " + to + ")";
     }
+//    @Override
+//    public int[][] toArray() {
+//        return "(" + from + ", " + to + ")";
+//    }
+
 }
 
 class Node {

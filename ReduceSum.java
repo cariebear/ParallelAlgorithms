@@ -20,9 +20,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.lang.Math.log;
 
-public class Prefix
+public class ReduceSum
 {
-        public static void main(int[] args) {
+        public static int[] main(int[] args) {
             int[] data = args;
             ForkJoinPool forkJoinPool = new ForkJoinPool();
 
@@ -32,7 +32,15 @@ public class Prefix
             int sum = forkJoinPool.invoke(new SumTask(data, 0, data.length, intermediateResults, index));
 
             System.out.println("Sum: " + sum);
-            System.out.println("Intermediate Results: " + java.util.Arrays.toString(intermediateResults));
+            int[] finalResults = new int[data.length-1];
+
+            //System.out.println("Intermediate Results: " + java.util.Arrays.toString(intermediateResults));
+            for(int i=1; i<intermediateResults.length; i++){
+                finalResults[i-1] = intermediateResults[i];
+                //System.out.println(intermediateResults[i]);
+            }
+            //System.out.println("Final Results: " + java.util.Arrays.toString(finalResults) + "/n");
+            return finalResults;
         }
 
         static class SumTask extends RecursiveTask<Integer> {
