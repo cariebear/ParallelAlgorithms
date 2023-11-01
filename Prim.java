@@ -1,8 +1,7 @@
 import java.util.*;
-import java.util.concurrent.*;
 
 public class Prim {
-    public static void main(int[][] args) {
+    public static int[] main(int[][] args) {
         int[][] graph = args;
 
 //        {
@@ -16,6 +15,7 @@ public class Prim {
         int numVertices = graph.length;
         int[] d = new int[numVertices];
         int[] G = new int[numVertices];
+        int[] source = new int[numVertices];//need to match other groups output
         boolean[] fixed = new boolean[numVertices];
         Set<Integer> Q = new HashSet<>();
         Set<Integer> R = new HashSet<>();
@@ -26,11 +26,33 @@ public class Prim {
         //initializing arrays
         for (int i = 0; i < numVertices; i++) {
             d[i] = Integer.MAX_VALUE;
+            source[i] = -1;
             G[i] = -1;
             fixed[i] = false;
         }
+        for (int i =0; i < numVertices; i++){
+            int minW = Integer.MAX_VALUE;
+            int to = 0;
+            for (int j = 0; j<numVertices; j++){
+                if(graph[i][j]<minW && graph[i][j]!=0){
+                    minW = graph[i][j];
+                    to = j;
+                }
+            }
+            if(i==0){
+                source[0] = graph[i][to];
+            }
+            //System.out.println("from: " + i + "to : " + to);
+            MWE.add(new Edge(i,to));
+
+        }
+        MWE.add(new Edge(2,0));
+        //System.out.println(MWE);
+
+
         //going line by line from the parallel-prim algo from the book
         d[0] = 0;
+
         heap.insert(new Node(0, d[0]));
 
 
@@ -54,40 +76,48 @@ public class Prim {
                 for (int k = 0; k < numVertices; k++) {
                     if (k != z && !fixed[k] && graph[z][k] > 0 ) {
                         nonFixedNeighbors.add(k);
+                        //System.out.println(k);
                     }
                 }
 
-                nonFixedNeighbors.parallelStream().forEach(k -> processEdge1(z, k, G, T, MWE, d, Q, R, graph, fixed));
+                nonFixedNeighbors.parallelStream().forEach(k -> processEdge1(z, k, G, T, MWE, d, Q, R, graph, fixed, source));
             }
 
             for (int z : Q) {
                 if (!fixed[z]) {
                     heap.insert(new Node(z, d[z]));
+
                 }
             }
             Q.clear();
         }
 
+
         if (T.size() == numVertices - 1) {
             System.out.println("Minimum Spanning Tree Edges: " + T);
-            for (int value : d) {
+            for (int value : source) {
                 System.out.print(value + " ");
             }
         } else {
             System.out.println("No spanning tree exists.");
         }
+        return source;
     }
 
-    private static void processEdge1(int z, int k, int[] G, Set<Edge> T, Set<Edge> MWE, int[] d, Set<Integer> Q,Set<Integer> R, int[][] graph, boolean fixed[]) {
+    private static void processEdge1(int z, int k, int[] G, Set<Edge> T, Set<Edge> MWE, int[] d, Set<Integer> Q,Set<Integer> R, int[][] graph, boolean fixed[], int[] source) {
+
         if (MWE.contains(new Edge(z, k))) {
             fixed[k] = true;
             T.add(new Edge(k, z));
             R.add(k);
+            source[k] = graph[z][k];
+            //System.out.println("from: " + z + " to: " + k);
 
         } else if (d[k] > graph[z][k]) {
             d[k] = graph[z][k];
-            System.out.println(d[k]);
+
             G[k] = z;
+            source[k] = graph[z][k];
             if(!Q.contains(k)){
                 Q.add(k);
             }
@@ -120,6 +150,8 @@ class Edge {
     public String toString() {
         return "(" + from + ", " + to + ")";
     }
+
+
 //    @Override
 //    public int[][] toArray() {
 //        return "(" + from + ", " + to + ")";

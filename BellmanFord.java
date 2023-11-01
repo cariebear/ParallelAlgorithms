@@ -3,7 +3,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
 public class BellmanFord {
-    public static void main(int[][] args) {
+    public static int[] main(int[][] args) {
         int[][] graph = args;
 //        {
 //                {0, 1, 2, 0},
@@ -11,11 +11,12 @@ public class BellmanFord {
 //                {0, 0, 0, 4},
 //                {0, 0, 0, 0}
 //        };
-
-        parallelLLPBellmanFord(graph);
+        int[] finalArray;
+        finalArray = parallelLLPBellmanFord(graph);
+        return finalArray;
     }
 
-    static void parallelLLPBellmanFord(int[][] graph) {
+    static int[] parallelLLPBellmanFord(int[][] graph) {
         int n = graph.length;
         int[] d = new int[n];
         Arrays.fill(d, Integer.MAX_VALUE);
@@ -33,6 +34,7 @@ public class BellmanFord {
         for (int i = 0; i < n; i++) {
             System.out.println("Shortest distance from source to node " + i + ": " + d[i]);
         }
+        return d;
     }
 
     static class BellmanFordTask extends RecursiveTask<Void> {

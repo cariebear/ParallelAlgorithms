@@ -69,7 +69,7 @@ class DownSweep implements Runnable {
 }
 
 public class PreFix {
-    public static void main(int[] args) {
+    public static int[] main(int[] args) {
         int[] array1 = args; // {1, 2, 3, 4, 5, 6, 7, 8};
         int[] array2 = ReduceSum.main(array1);  //{36, 10, 26, 3, 7, 11, 15};
 
@@ -112,5 +112,6 @@ public class PreFix {
             System.out.print(value + " ");
         }
         System.out.println("\n");
+        return finalArray;
     }
 }

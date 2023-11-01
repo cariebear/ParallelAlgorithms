@@ -73,7 +73,7 @@ public class OptimalBST {
         }
     }
 
-    public static void main(int[] args) {
+    public static int main(int[] args) {
         int keys[] = {10};
         int freq[] = args; //{25,20,5,20,30};
         int n = freq.length;
@@ -82,5 +82,6 @@ public class OptimalBST {
         int result = pool.invoke(new OptimalSearchTreeTask(freq, 0, n - 1));
 
         System.out.println("Cost of Optimal BST is " + result);
+        return result;
     }
 }
