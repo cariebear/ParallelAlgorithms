@@ -70,7 +70,9 @@ public class Prim {
 
         if (T.size() == numVertices - 1) {
             System.out.println("Minimum Spanning Tree Edges: " + T);
-            System.out.println();
+            for (int value : d) {
+                System.out.print(value + " ");
+            }
         } else {
             System.out.println("No spanning tree exists.");
         }
@@ -81,8 +83,10 @@ public class Prim {
             fixed[k] = true;
             T.add(new Edge(k, z));
             R.add(k);
+
         } else if (d[k] > graph[z][k]) {
             d[k] = graph[z][k];
+            System.out.println(d[k]);
             G[k] = z;
             if(!Q.contains(k)){
                 Q.add(k);
