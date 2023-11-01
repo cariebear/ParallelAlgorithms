@@ -2,15 +2,10 @@ import java.util.Arrays;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
-public class BellmanFord {
+class BellmanFord {
     public static int[] main(int[][] args) {
         int[][] graph = args;
-//        {
-//                {0, 1, 2, 0},
-//                {0, 0, 0, 3},
-//                {0, 0, 0, 4},
-//                {0, 0, 0, 0}
-//        };
+
         int[] finalArray;
         finalArray = parallelLLPBellmanFord(graph);
         return finalArray;
@@ -51,13 +46,13 @@ public class BellmanFord {
         }
 
         @Override
-        protected Void compute() {
+        protected synchronized Void compute() {
             for (int i = 0; i < n; i++) {
                 if (graph[k][i] != 0 && d[i] > d[k] + graph[k][i]) {
                     d[i] = d[k] + graph[k][i];
                 }
             }
-            return null;
+            throw new RuntimeException("Negative cycle found");
         }
     }
 }

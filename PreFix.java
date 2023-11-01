@@ -70,8 +70,9 @@ class DownSweep implements Runnable {
 
 public class PreFix {
     public static int[] main(int[] args) {
-        int[] array1 = args; // {1, 2, 3, 4, 5, 6, 7, 8};
-        int[] array2 = ReduceSum.main(array1);  //{36, 10, 26, 3, 7, 11, 15};
+        if (args.length == 0) throw new RuntimeException("Empty array");
+        int[] array1 = args;
+        int[] array2 = ReduceSum.main(array1);
 
         int arraySize = array1.length;
         int numThreads = arraySize * 2;
@@ -103,10 +104,6 @@ public class PreFix {
             finalArray[i - arraySize + 1] = resultArray[i];
         }
 
-//        System.out.println("Result Array:");
-//        for (int value : resultArray) {
-//            System.out.print(value + " ");
-//        }
         System.out.println("Exclusive Prefix Sum Array:");
         for (int value : finalArray) {
             System.out.print(value + " ");

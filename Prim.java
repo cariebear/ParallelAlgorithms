@@ -1,17 +1,15 @@
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 public class Prim {
+
     public static int[] main(int[][] args) {
         int[][] graph = args;
 
-//        {
-//                {0, 3, 0, 0, 4},
-//                {3, 0, 5, 9, 0},
-//                {0, 5, 0, 2, 6},
-//                {0, 9, 2, 0, 7},
-//                {4, 0, 6, 7, 0}
-//        };
-
+        if (graph.length == 0) throw new RuntimeException("Empty array");
         int numVertices = graph.length;
         int[] d = new int[numVertices];
         int[] G = new int[numVertices];
@@ -47,14 +45,12 @@ public class Prim {
 
         }
         MWE.add(new Edge(2,0));
-        //System.out.println(MWE);
 
 
         //going line by line from the parallel-prim algo from the book
         d[0] = 0;
 
         heap.insert(new Node(0, d[0]));
-
 
         while (!heap.isEmpty()) {
             Node node = heap.removeMin();
@@ -68,7 +64,7 @@ public class Prim {
                 }
             }
 
-            while (!R.isEmpty()) {
+            synchronized (R) {
                 int z = R.iterator().next();
                 R.remove(z);
 
@@ -150,13 +146,6 @@ class Edge {
     public String toString() {
         return "(" + from + ", " + to + ")";
     }
-
-
-//    @Override
-//    public int[][] toArray() {
-//        return "(" + from + ", " + to + ")";
-//    }
-
 }
 
 class Node {
