@@ -2,32 +2,8 @@ import java.util.concurrent.RecursiveTask;
 import java.util.concurrent.ForkJoinPool;
 
 public class OptimalBST {
-    static int optCost(int freq[], int i, int j) {
-        if (j < i) {
-            return 0;
-        }
-        if (j == i) {
-            return freq[i];
-        }
 
-        int fsum = sum(freq, i, j);
-        int min = Integer.MAX_VALUE;
-
-        for (int k = i; k <= j; ++k) {
-            int cost = optCost(freq, i, k - 1) + optCost(freq, k + 1, j);
-            if (cost < min) {
-                min = cost;
-            }
-        }
-
-        return min + fsum;
-    }
-
-    static int optimalSearchTree(int keys[], int freq[], int n) {
-        return optCost(freq, 0, n - 1);
-    }
-
-    static int sum(int freq[], int i, int j) {
+    static int sum(int[] freq, int i, int j) {
         int s = 0;
         for (int k = i; k <= j; k++) {
             s += freq[k];
@@ -36,10 +12,10 @@ public class OptimalBST {
     }
 
     static class OptimalSearchTreeTask extends RecursiveTask<Integer> {
-        int freq[];
+        int[] freq;
         int i, j;
 
-        OptimalSearchTreeTask(int freq[], int i, int j) {
+        OptimalSearchTreeTask(int[] freq, int i, int j) {
             this.freq = freq;
             this.i = i;
             this.j = j;
@@ -74,8 +50,8 @@ public class OptimalBST {
     }
 
     public static int main(int[] args) {
-        int keys[] = {10};
-        int freq[] = args; //{25,20,5,20,30};
+        int[] keys = {10};
+        int[] freq = args; //{25,20,5,20,30};
         int n = freq.length;
 
         ForkJoinPool pool = new ForkJoinPool();

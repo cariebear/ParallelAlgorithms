@@ -1,15 +1,15 @@
 import java.util.Arrays;
 
 class SharedData {
-    private int[] resultArray;
-    private boolean[] ready;
+    private final int[] resultArray;
+    private final boolean[] ready;
 
     public SharedData(int[] resultArray) {
         this.resultArray = resultArray;
         Arrays.fill(resultArray, (int) Double.NEGATIVE_INFINITY);
         this.ready = new boolean[resultArray.length];
     }
-
+//Synchronized added to wait for data to write to output array prior to read
     public synchronized int read(int index) {
         while (!ready[index]) {
             try {
@@ -28,15 +28,15 @@ class SharedData {
     }
 }
 
+//Running threads that will be ID specific
 class DownSweep implements Runnable {
-    private int[] array1;
-    private int[] array2;
-    private int[] resultArray;
-    private int index;
-    private int endIndex;
-    private boolean OddEven;
+    private final int[] array1;
+    private final int[] array2;
+    private final int index;
+    private final int endIndex;
+    private final boolean OddEven;
 
-    private SharedData sharedData;
+    private final SharedData sharedData;
 
     public DownSweep(int[] array1, int[] array2, SharedData sharedData, int index, int endIndex, boolean OddEven) {
         this.array1 = array1;
@@ -98,11 +98,10 @@ public class PreFix {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        //Filter out everything but the solutions section of the result array
         int[] finalArray = new int[arraySize];
-        for (int i = arraySize; i < resultArray.length - 1; i++) {
-            finalArray[i - arraySize + 1] = resultArray[i];
-        }
+        if (resultArray.length - 1 - arraySize >= 0)
+            System.arraycopy(resultArray, arraySize, finalArray, 0 + 1, resultArray.length - 1 - arraySize);
 
         System.out.println("Exclusive Prefix Sum Array:");
         for (int value : finalArray) {

@@ -28,6 +28,8 @@ public class Prim {
             G[i] = -1;
             fixed[i] = false;
         }
+
+        //Creating MWE
         for (int i =0; i < numVertices; i++){
             int minW = Integer.MAX_VALUE;
             int to = 0;
@@ -40,7 +42,6 @@ public class Prim {
             if(i==0){
                 source[0] = graph[i][to];
             }
-            //System.out.println("from: " + i + "to : " + to);
             MWE.add(new Edge(i,to));
 
         }
@@ -100,7 +101,7 @@ public class Prim {
         return source;
     }
 
-    private static void processEdge1(int z, int k, int[] G, Set<Edge> T, Set<Edge> MWE, int[] d, Set<Integer> Q,Set<Integer> R, int[][] graph, boolean fixed[], int[] source) {
+    private static void processEdge1(int z, int k, int[] G, Set<Edge> T, Set<Edge> MWE, int[] d, Set<Integer> Q, Set<Integer> R, int[][] graph, boolean[] fixed, int[] source) {
 
         if (MWE.contains(new Edge(z, k))) {
             fixed[k] = true;
@@ -114,9 +115,7 @@ public class Prim {
 
             G[k] = z;
             source[k] = graph[z][k];
-            if(!Q.contains(k)){
-                Q.add(k);
-            }
+            Q.add(k);
         }
     }
 }
@@ -158,7 +157,7 @@ class Node {
 }
 
 class BinaryHeap {
-    private PriorityQueue<Node> heap;
+    private final PriorityQueue<Node> heap;
 
     public BinaryHeap() {
         heap = new PriorityQueue<>(Comparator.comparingInt(node -> node.dist));
