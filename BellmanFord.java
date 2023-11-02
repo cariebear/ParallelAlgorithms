@@ -24,6 +24,7 @@ class BellmanFord {
             pool.invoke(task);
         }
 
+
         // Output the minimum distance vector
 
         for (int i = 0; i < n; i++) {
@@ -47,12 +48,21 @@ class BellmanFord {
 
         @Override
         protected synchronized Void compute() {
+            boolean flag = false;
             for (int i = 0; i < n; i++) {
                 if (graph[k][i] != 0 && d[i] > d[k] + graph[k][i]) {
+                    if (graph[k][i] < 0) flag = true;
                     d[i] = d[k] + graph[k][i];
                 }
             }
-            throw new RuntimeException("Negative cycle found");
+            if (flag)
+            {
+                for (int i = 0; i < n; i++) {
+                    if (graph[i][k] != 0 && graph[k][i] + d[k] < d[i])
+                        throw new RuntimeException("Negative cycle detected");
+                }
+            }
+            return null;
         }
     }
 }
